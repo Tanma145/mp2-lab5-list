@@ -9,23 +9,58 @@ struct TNode {
 };
 
 template <class T>
-class TList
-{
-	TNode<T> pFirst;
+class TList{
+protected:
+	int pos, len;
+	TNode<T> *pFirst, *pLast, *pCurr, *pPrev, *pStop;
 public:
-	TList(){}
+	TList(){
+		pFirst = 0;
+		pLast = 0;
+		pCurr = 0;
+		pPrev = 0;
+		pStop = 0;
+		len = 0;
+		pos = -1;
+	}
 	~TList(){}
 
 	int Size() {
-		int s = ;
-		TNode* pCur = pFirst;
-		while (pCur) {
-			k++;
-			pCur = pCur->pNext;
+		int s = 0;
+		pCurr = pFirst;
+		while (pCurr != pStop) {
+			s++;
+			pCurr = pCurr->pNext;
 		}
 		return s;
 	}
-	void Insert(int pos, T el) {
+	void InsFirst(T el) {
+		TNode<T>* p = new TNode<T>;
+		p->pNext = pFirst;
+		pFirst = p;
+		len++;
+		pos++;
+	}
+	void InsLast(T el) {
+		TNode<T>* p = new TNode<T>;
+		pLast->pNext = p;
+		p->pNext = pStop;
+		pLast = p;
+		len++;
+	}
+	void InsCurr(T el) {
+		TNode<T>* p = new TNode<T>;
+		p->val = el;
+		if (pCurr == pFirst) InsFirst(el);
+		else {
+			pPrev->pNext = p;
+			p->pNext = pCurr;
+			len++;
+			pos++;
+			pCurr = p;
+		}
+	}/*
+	void Ins(int pos, T el) {
 		TNode<T>* pNew = new TNode<T>;
 		pNew->Val = el;
 		if (pos == 0) {
@@ -39,6 +74,35 @@ public:
 			pNew->pNext = pCur->pNext;
 			p->pNext = pNew;
 		}
+	}*/
+	T GetCurr() {
+		return pCurr->Val;
+	}
+	void Reset() {
+		pCurr = pFirst;
+		pPrev = NULL;
+		pos = 0;
+	}
+	void GoNext() {
+		pPrev = pCurr;
+		pCurr = pCurr->pNext;
+		pos++;
+	}
+	bool IsEnd() {
+		return pCurr == pStop;
+	}
+	void InsOrder(T el) {
+		if (pFirst == 0 || pFirst->Val < el)
+			InsFirst();
+		else
+			if (el < pLast->val)
+				InsLast(el);
+			else
+				for (Reset(); !IsEnd(); GoNext())
+					if (pCurr->val < el) {
+						InsCurr(el);
+						break;
+					}
 	}
 };
 

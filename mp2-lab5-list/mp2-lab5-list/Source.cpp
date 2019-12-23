@@ -4,15 +4,11 @@
 using namespace std;
 
 int main() {
-	TQueue<int> q;
-	q.Push(4);
-	q.Push(2);
-	q.Push(9);
-	q.Push(3);
-	q.Push(5);
-	cout << q << endl;
-	q.Func(7);
-	cout << q;
+	TList<int> list;
+	list.InsFirst(10);
+	for (list.Reset(); !list.IsEnd(); list.GoNext()) {
+		cout << list.GetCurr();
+	}
 	_getch();
 	return 0;
 }
