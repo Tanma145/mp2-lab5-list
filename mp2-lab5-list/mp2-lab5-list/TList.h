@@ -37,7 +37,9 @@ public:
 	void InsFirst(T el) {
 		TNode<T>* p = new TNode<T>;
 		p->pNext = pFirst;
+		p->Val = el;
 		pFirst = p;
+		if (!pLast) pLast = p;
 		len++;
 		pos++;
 	}
@@ -45,12 +47,13 @@ public:
 		TNode<T>* p = new TNode<T>;
 		pLast->pNext = p;
 		p->pNext = pStop;
+		p->Val = el;
 		pLast = p;
 		len++;
 	}
 	void InsCurr(T el) {
 		TNode<T>* p = new TNode<T>;
-		p->val = el;
+		p->Val = el;
 		if (pCurr == pFirst) InsFirst(el);
 		else {
 			pPrev->pNext = p;
@@ -78,6 +81,9 @@ public:
 	T GetCurr() {
 		return pCurr->Val;
 	}
+	int GetLen() {
+		return len;
+	}
 	void Reset() {
 		pCurr = pFirst;
 		pPrev = NULL;
@@ -93,13 +99,13 @@ public:
 	}
 	void InsOrder(T el) {
 		if (pFirst == 0 || pFirst->Val < el)
-			InsFirst();
+			InsFirst(el);
 		else
-			if (el < pLast->val)
+			if (el <= pLast->Val)
 				InsLast(el);
 			else
 				for (Reset(); !IsEnd(); GoNext())
-					if (pCurr->val < el) {
+					if (pCurr->Val < el) {
 						InsCurr(el);
 						break;
 					}
