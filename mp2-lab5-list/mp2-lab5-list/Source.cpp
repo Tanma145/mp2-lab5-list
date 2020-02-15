@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-	TList<int> list;
+	THeadList<int> list;
 	//list.InsFirst(10);
 	//for (list.Reset(); !list.IsEnd(); list.GoNext()) {
 	//	cout << list.GetCurr() << " ";

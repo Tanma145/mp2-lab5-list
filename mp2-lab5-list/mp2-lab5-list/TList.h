@@ -8,6 +8,7 @@ struct TNode {
 	TNode<T>* pNext;
 };
 
+//ÑÏÈÑÎÊ
 template <class T>
 class TList{
 protected:
@@ -23,7 +24,8 @@ public:
 		len = 0;
 		pos = -1;
 	}
-	~TList(){}
+	~TList(){
+	}
 
 	int Size() {
 		int s = 0;
@@ -62,7 +64,14 @@ public:
 			pos++;
 			pCurr = p;
 		}
-	}/*
+	}
+	void DelFirst() {
+		TNode<T>* tmp = new TNode<T>;
+		tmp = pFirst;
+		delete pFirst;
+		pFirst = tmp->pNext;
+	}
+	/*
 	void Ins(int pos, T el) {
 		TNode<T>* pNew = new TNode<T>;
 		pNew->Val = el;
@@ -96,7 +105,10 @@ public:
 	}
 	bool IsEnd() {
 		return pCurr == pStop;
-	}
+	}/*
+	bool IsEmpty() {
+		return pFirst == p
+	}*/
 	void InsOrder(T el) {
 		if (pFirst == 0 || pFirst->Val < el)
 			InsFirst(el);
@@ -111,7 +123,31 @@ public:
 					}
 	}
 };
+//ÑÏÈÑÎÊ Ñ ÃÎËÎÂÎÉ
+template <class T>
+class THeadList :public TList<T> {
+protected:
+	TNode<T>* pHead;
+public:
+	THeadList() : TList<T>() {
+		pHead = new TNode<T>;
+		pStop = pStop = pHead;
+		pHead->pNext = pHead;
+		pFirst = pHead;
+	}
+	void InsFirst(T el) {
+		TList<T>::InsFirst(el);
+		pHead->pNext = pFirst;
+	}
+	void DelFirst(T el) {
+		TList<T>::DelFirst(el);
+		pHead->pNext = pFirst;
+	}
+	~THeadList() {
 
+	}
+};
+//Î×ÅÐÅÄÜ
 template <class T>
 class TQueue {
 	TNode<T> *pFirst, *pLast;
