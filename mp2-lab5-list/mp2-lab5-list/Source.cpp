@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-	THeadList<int> list;
+	TList<int> list;
 	//list.InsFirst(10);
 	//for (list.Reset(); !list.IsEnd(); list.GoNext()) {
 	//	cout << list.GetCurr() << " ";
@@ -19,6 +19,21 @@ int main() {
 		}
 		cout << endl;
 	} while (a != 0);
+	cout << endl;
+
+	/*
+	list.DelFirst();
+	cout << list.GetLen() << ": ";
+	for (list.Reset(); !list.IsEnd(); list.GoNext())
+		cout << list.GetCurr() << " ";
+	cout << endl;
+	*/
+
+	list.DelList();
+	cout << list.GetLen() << ": ";
+	for (list.Reset(); !list.IsEnd(); list.GoNext())
+		cout << list.GetCurr() << " ";
+	cout << endl;
 	
 	_getch();
 	return 0;

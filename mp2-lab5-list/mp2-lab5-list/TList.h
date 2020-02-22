@@ -25,6 +25,7 @@ public:
 		pos = -1;
 	}
 	~TList(){
+		DelList();
 	}
 
 	int Size() {
@@ -46,30 +47,55 @@ public:
 		pos++;
 	}
 	void InsLast(T el) {
-		TNode<T>* p = new TNode<T>;
-		pLast->pNext = p;
-		p->pNext = pStop;
-		p->Val = el;
-		pLast = p;
+		TNode<T>* tmp = new TNode<T>;
+		pLast->pNext = tmp;
+		tmp->pNext = pStop;
+		tmp->Val = el;
+		pLast = tmp;
 		len++;
 	}
 	void InsCurr(T el) {
-		TNode<T>* p = new TNode<T>;
-		p->Val = el;
 		if (pCurr == pFirst) InsFirst(el);
 		else {
+			TNode<T>* p = new TNode<T>;
+			p->Val = el;
 			pPrev->pNext = p;
 			p->pNext = pCurr;
 			len++;
-			pos++;
 			pCurr = p;
 		}
 	}
 	void DelFirst() {
 		TNode<T>* tmp = new TNode<T>;
-		tmp = pFirst;
+		tmp = pFirst->pNext;
 		delete pFirst;
-		pFirst = tmp->pNext;
+		pFirst = tmp;
+		len--;
+		pos--;
+	}
+	/*
+	void DelLast() {
+		TNode<T>* tmp = new TNode<T>;
+		tmp = pLast;
+		delete pLast;
+		pLast = 
+		
+	}
+	*/
+	void DelCurr() {
+		if (pCurr == pFirst) DelFirst();
+		else {
+			TNode<T>* tmp = new TNode<T>;
+			tmp = pCurr;
+			delete pCurr;
+			pCurr = tmp->pNext;
+		}
+	}
+	void DelList() {
+		int l = len;
+		for (int i = 0; i < l; i++)
+			DelFirst();
+
 	}
 	/*
 	void Ins(int pos, T el) {
@@ -131,7 +157,7 @@ protected:
 public:
 	THeadList() : TList<T>() {
 		pHead = new TNode<T>;
-		pStop = pStop = pHead;
+		pStop = pHead;
 		pHead->pNext = pHead;
 		pFirst = pHead;
 	}
@@ -139,12 +165,13 @@ public:
 		TList<T>::InsFirst(el);
 		pHead->pNext = pFirst;
 	}
-	void DelFirst(T el) {
-		TList<T>::DelFirst(el);
+	void DelFirst() {
+		TList<T>::DelFirst();
 		pHead->pNext = pFirst;
 	}
 	~THeadList() {
-
+		TList<T>::DelList();
+		delete pHead;
 	}
 };
 //Î×ÅÐÅÄÜ
@@ -212,4 +239,39 @@ public:
 		return os;
 	}
 	*/
+};
+struct TMonomial {
+	double coeff;
+	int px, py, pz;
+	bool operator== (TMonomial a) {
+		return ((px == a.px) && (py == a.py) && (pz == a.pz));
+	}
+	bool operator> (TMonomial a) {
+		return ((px > a.px) || (px <= a.px) && (py > a.py) || (px <= a.px) && (py <= a.py) && (pz > a.pz));
+	}
+	bool operator< (TMonomial a) {
+		return ((px < a.px) || (px >= a.px) && (py < a.py) || (px >= a.px) && (py >= a.py) && (pz < a.pz));
+	}
+	bool operator>= (TMonomial a) {
+		return ((px >= a.px) || (px < a.px) && (py >= a.py) || (px < a.px) && (py < a.py) && (pz >= a.pz));
+	}
+	bool operator<= (TMonomial a) {
+		return ((px <= a.px) || (px > a.px) && (py <= a.py) || (px > a.px) && (py > a.py) && (pz <= a.pz));
+	}
+};
+class TPolynomial : public THeadList<TMonomial> {
+public:
+	TPolynomial() : THeadList<TMonomial>(){
+		pHead->Val.pz = -1;
+	}
+	TPolynomial(TPolynomial& p) : THeadList<TMonomial>() {
+		pHead->Val.pz = -1;
+		for (p.Reset(); !p.IsEnd(); p.GoNext()) {
+			TMonomial mon = p.DelCurr->val;
+			InsLast(mon);
+		}
+	}
+	TPolynomial(int arr[][2], int size) {
+
+	}
 };
