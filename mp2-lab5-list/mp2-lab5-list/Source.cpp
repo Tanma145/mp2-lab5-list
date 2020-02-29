@@ -9,6 +9,7 @@ int main() {
 	//for (list.Reset(); !list.IsEnd(); list.GoNext()) {
 	//	cout << list.GetCurr() << " ";
 	//}
+	cout << "uwu" << endl;
 	int a;
 	do{
 		cin >> a;
