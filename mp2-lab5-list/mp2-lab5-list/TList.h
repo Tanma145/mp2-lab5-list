@@ -258,6 +258,18 @@ struct TMonomial {
 	bool operator<= (TMonomial a) {
 		return ((px <= a.px) || (px > a.px) && (py <= a.py) || (px > a.px) && (py > a.py) && (pz <= a.pz));
 	}
+	void operator+= (TMonomial mon) {
+		if (*this == mon) {
+			coeff += mon.coeff;
+		}
+		else
+			throw 0;
+	}
+	TMonomial operator+ (TMonomial mon) {
+		TMonomial res = *this;
+		res += mon;
+		return res;
+	}
 };
 class TPolynomial : public THeadList<TMonomial> {
 public:
@@ -271,7 +283,72 @@ public:
 			InsLast(mon);
 		}
 	}
-	TPolynomial(int arr[][2], int size) {
-
+	TPolynomial(int arr[][2], int size) :THeadList<TMonomial>(){
+		pHead->Val.pz = -1;
+		for (int i = 0; i < size; i++) {
+			TMonomial mon;
+			mon.coeff = arr[i][0];
+			mon.px = arr[i][1] / 100;
+			mon.py = arr[i][1] / 10 % 10;
+			mon.pz = arr[i][1] %10;
+			InsLast(mon);
+		}
+	}
+	void operator+= (TMonomial& mon) {
+		for (Reset(); !IsEnd(); GoNext()) {
+			if (pCurr->Val == mon) {
+				pCurr->Val += mon;
+				if (!pCurr->Val.coeff)
+					DelCurr();
+				return;
+			}
+			if (mon > pCurr->Val) {
+				InsCurr(mon);
+				return;
+			}
+			InsLast(mon);
+		}
+	}
+	TPolynomial operator+ (TMonomial& mon) {
+		TPolynomial res = *this;
+		res += mon;
+		return res;
+	}
+	void operator*= (TMonomial& mon) {
+		for (Reset(); !IsEnd(); GoNext()) {
+			pCurr->Val.coeff *= mon.coeff;
+			pCurr->Val.px += mon.px;
+			pCurr->Val.py += mon.py;
+			pCurr->Val.pz += mon.pz;
+		}
+	}
+	TPolynomial operator* (TMonomial& mon) {
+		TPolynomial res = *this;
+		res *= mon;
+		return res;
+	}
+	void operator+= (TPolynomial& q) {
+		TMonomial pm, qm, rm;
+		Reset();
+		q.Reset();
+		while (!q.IsEnd) {
+			pm = pCurr->Val;
+			qm = q.pCurr->Val;
+			if (pm > qm)
+				GoNext();
+			else
+				if (pm < qm) {
+					InsCurr(qm);
+				}
+				else {
+					rm = pm;
+					rm.coeff += qm.coeff;
+					pCurr->Val = rm;
+					if (rm.coeff == 0)
+						DelCurr();
+					GoNext();
+					q.GoNext();
+				}
+		}
 	}
 };
