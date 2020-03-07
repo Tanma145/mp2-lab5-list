@@ -240,6 +240,7 @@ public:
 	}
 	*/
 };
+//MONOMIAL
 struct TMonomial {
 	double coeff;
 	int px, py, pz;
@@ -271,6 +272,7 @@ struct TMonomial {
 		return res;
 	}
 };
+//POLYNOMIAL
 class TPolynomial : public THeadList<TMonomial> {
 public:
 	TPolynomial() : THeadList<TMonomial>(){
