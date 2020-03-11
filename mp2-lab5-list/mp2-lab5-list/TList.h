@@ -38,21 +38,32 @@ public:
 		return s;
 	}
 	void InsFirst(T el) {
-		TNode<T>* p = new TNode<T>;
-		p->pNext = pFirst;
-		p->Val = el;
-		pFirst = p;
-		if (!pLast) pLast = p;
+		TNode<T>* tmp = new TNode<T>;
+		tmp->Val = el;
+		tmp->pNext = pFirst;
+		if (pFirst == NULL) {
+			pFirst = pLast = pCurr = tmp;
+			pFirst->pNext = pStop;
+			pos = 0;
+		}
+		else {
+			tmp->pNext = pFirst;
+			pFirst = tmp;
+		}
 		len++;
 		pos++;
 	}
 	void InsLast(T el) {
-		TNode<T>* tmp = new TNode<T>;
-		pLast->pNext = tmp;
-		tmp->pNext = pStop;
-		tmp->Val = el;
-		pLast = tmp;
-		len++;
+		if (pLast == NULL)
+			InsFirst(el);
+		else {
+			TNode<T>* tmp = new TNode<T>;
+			pLast->pNext = tmp;
+			tmp->pNext = pStop;
+			tmp->Val = el;
+			pLast = tmp;
+			len++;
+		}
 	}
 	void InsCurr(T el) {
 		if (pCurr == pFirst) InsFirst(el);
@@ -149,41 +160,18 @@ public:
 					}
 	}
 };
-//—œ»—Œ  — √ŒÀŒ¬Œ…
-template <class T>
-class THeadList :public TList<T> {
-protected:
-	TNode<T>* pHead;
-public:
-	THeadList() : TList<T>() {
-		pHead = new TNode<T>;
-		pStop = pHead;
-		pHead->pNext = pHead;
-		pFirst = pHead;
-	}
-	void InsFirst(T el) {
-		TList<T>::InsFirst(el);
-		pHead->pNext = pFirst;
-	}
-	void DelFirst() {
-		TList<T>::DelFirst();
-		pHead->pNext = pFirst;
-	}
-	~THeadList() {
-		TList<T>::DelList();
-		delete pHead;
-	}
-};
+
+
 //Œ◊≈–≈ƒ‹
 template <class T>
 class TQueue {
-	TNode<T> *pFirst, *pLast;
+	TNode<T>* pFirst, * pLast;
 public:
 	TQueue<T>() {
 		pFirst = 0;
 		pLast = 0;
 	}
-	~TQueue(){}
+	~TQueue() {}
 	TNode<T>* Head() const {
 		return pFirst;
 	}
@@ -239,116 +227,4 @@ public:
 		return os;
 	}
 	*/
-};
-struct TMonomial {
-	double coeff;
-	int px, py, pz;
-	bool operator== (TMonomial a) {
-		return ((px == a.px) && (py == a.py) && (pz == a.pz));
-	}
-	bool operator> (TMonomial a) {
-		return ((px > a.px) || (px <= a.px) && (py > a.py) || (px <= a.px) && (py <= a.py) && (pz > a.pz));
-	}
-	bool operator< (TMonomial a) {
-		return ((px < a.px) || (px >= a.px) && (py < a.py) || (px >= a.px) && (py >= a.py) && (pz < a.pz));
-	}
-	bool operator>= (TMonomial a) {
-		return ((px >= a.px) || (px < a.px) && (py >= a.py) || (px < a.px) && (py < a.py) && (pz >= a.pz));
-	}
-	bool operator<= (TMonomial a) {
-		return ((px <= a.px) || (px > a.px) && (py <= a.py) || (px > a.px) && (py > a.py) && (pz <= a.pz));
-	}
-	void operator+= (TMonomial mon) {
-		if (*this == mon) {
-			coeff += mon.coeff;
-		}
-		else
-			throw 0;
-	}
-	TMonomial operator+ (TMonomial mon) {
-		TMonomial res = *this;
-		res += mon;
-		return res;
-	}
-};
-class TPolynomial : public THeadList<TMonomial> {
-public:
-	TPolynomial() : THeadList<TMonomial>(){
-		pHead->Val.pz = -1;
-	}
-	TPolynomial(TPolynomial& p) : THeadList<TMonomial>() {
-		pHead->Val.pz = -1;
-		for (p.Reset(); !p.IsEnd(); p.GoNext()) {
-			TMonomial mon = p.DelCurr->val;
-			InsLast(mon);
-		}
-	}
-	TPolynomial(int arr[][2], int size) :THeadList<TMonomial>(){
-		pHead->Val.pz = -1;
-		for (int i = 0; i < size; i++) {
-			TMonomial mon;
-			mon.coeff = arr[i][0];
-			mon.px = arr[i][1] / 100;
-			mon.py = arr[i][1] / 10 % 10;
-			mon.pz = arr[i][1] %10;
-			InsLast(mon);
-		}
-	}
-	void operator+= (TMonomial& mon) {
-		for (Reset(); !IsEnd(); GoNext()) {
-			if (pCurr->Val == mon) {
-				pCurr->Val += mon;
-				if (!pCurr->Val.coeff)
-					DelCurr();
-				return;
-			}
-			if (mon > pCurr->Val) {
-				InsCurr(mon);
-				return;
-			}
-			InsLast(mon);
-		}
-	}
-	TPolynomial operator+ (TMonomial& mon) {
-		TPolynomial res = *this;
-		res += mon;
-		return res;
-	}
-	void operator*= (TMonomial& mon) {
-		for (Reset(); !IsEnd(); GoNext()) {
-			pCurr->Val.coeff *= mon.coeff;
-			pCurr->Val.px += mon.px;
-			pCurr->Val.py += mon.py;
-			pCurr->Val.pz += mon.pz;
-		}
-	}
-	TPolynomial operator* (TMonomial& mon) {
-		TPolynomial res = *this;
-		res *= mon;
-		return res;
-	}
-	void operator+= (TPolynomial& q) {
-		TMonomial pm, qm, rm;
-		Reset();
-		q.Reset();
-		while (!q.IsEnd) {
-			pm = pCurr->Val;
-			qm = q.pCurr->Val;
-			if (pm > qm)
-				GoNext();
-			else
-				if (pm < qm) {
-					InsCurr(qm);
-				}
-				else {
-					rm = pm;
-					rm.coeff += qm.coeff;
-					pCurr->Val = rm;
-					if (rm.coeff == 0)
-						DelCurr();
-					GoNext();
-					q.GoNext();
-				}
-		}
-	}
 };
