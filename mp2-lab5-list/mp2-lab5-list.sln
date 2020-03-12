@@ -1,11 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-<<<<<<< HEAD
-VisualStudioVersion = 16.0.29519.181
-=======
 VisualStudioVersion = 16.0.29709.97
->>>>>>> 9d7be9bf96894807693b26adc4aaf15cda67476e
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp2-lab5-list", "mp2-lab5-list\mp2-lab5-list.vcxproj", "{0A95788A-A68D-4330-8C4C-A14E974A3E55}"
 EndProject
