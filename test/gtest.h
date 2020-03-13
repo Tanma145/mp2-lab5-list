@@ -48,6 +48,8 @@
 // registration from Barthelemy Dagenais' (barthelemy@prologique.com)
 // easyUnit framework.
 
+//!!!!!!Серьезность	Код	Описание	Проект	Файл	Строка	Состояние подавления Ошибка	C4996	'std::tr1': warning STL4002 : The non - Standard std::tr1 namespace and TR1 - only machinery are deprecated and will be REMOVED.You can define _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING to acknowledge that you have received this warning.test	C : \Users\Egor\source\repos\mp2 - lab5 - list\test\gtest.h	9690
+
 #define _SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING
 
 #define _VARIADIC_MAX 10
@@ -20062,4 +20064,4 @@ inline int RUN_ALL_TESTS() {
   return ::testing::UnitTest::GetInstance()->Run();
 }
 
-#endif  // GTEST_INCLUDE_GTEST_GTEST_H_
+#endif  // GTEST_INCLUDE_GTEST_GTEST_H

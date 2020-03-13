@@ -63,6 +63,8 @@ public:
 			InsLast(mon);
 		}
 	}
+	bool operator== (const TPolynomial&) const;
+	TPolynomial& operator= (TPolynomial&);
 	void operator+= (TMonomial&);
 	TPolynomial operator+ (TMonomial&);
 	void operator*= (TMonomial&);
@@ -79,6 +81,26 @@ public:
 	}
 };
 
+inline bool TPolynomial::operator==(const TPolynomial &pol) const{
+	TNode<TMonomial> *i1, *i2;
+	i1 = pFirst;
+	i2 = pol.pFirst;
+	while (i1->Val == i2->Val && i1 != pStop && i2 != pStop) {
+		cout << "oof" << endl;
+		i1 = i1->pNext;
+		i2 = i2->pNext;
+	}
+	return (i1 == pStop) && (i2 == pol.pStop);
+}
+
+inline TPolynomial& TPolynomial::operator=(TPolynomial &pol){
+	DelList();
+	for (pol.Reset(); pol.IsEnd(); pol.GoNext()) {
+		*this += pol.pCurr->Val;
+	}
+	return *this;
+}
+
 void TPolynomial::operator+=(TMonomial& mon) {
 	for (Reset(); !IsEnd(); GoNext()) {
 		if (pCurr->Val == mon) {
@@ -91,8 +113,8 @@ void TPolynomial::operator+=(TMonomial& mon) {
 			InsCurr(mon);
 			return;
 		}
-		InsLast(mon);
 	}
+	InsLast(mon);
 }
 
 TPolynomial TPolynomial::operator+(TMonomial& mon) {
@@ -128,6 +150,7 @@ void TPolynomial::operator+=(TPolynomial& q) {
 		else
 			if (pm < qm) {
 				InsCurr(qm);
+				q.GoNext();
 			}
 			else {
 				rm = pm;

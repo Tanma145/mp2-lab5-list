@@ -18,6 +18,7 @@ public:
 	void InsFirst(T el);
 	void DelFirst();
 };
+
 template <class T>
 void THeadList<T>::InsFirst(T el) {
 	TList<T>::InsFirst(el);

@@ -151,9 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="gtest.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="test.cpp" />
     <ClCompile Include="test_main.cpp" />
     <ClCompile Include="test_polynomial.cpp" />
