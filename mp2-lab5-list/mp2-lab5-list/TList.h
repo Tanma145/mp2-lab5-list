@@ -42,7 +42,9 @@ public:
 		tmp->Val = el;
 		tmp->pNext = pFirst;
 		if (pFirst == NULL) {
-			pFirst = pLast = pCurr = tmp;
+			pFirst = tmp;
+			pLast = tmp;
+			pCurr = tmp;
 			pFirst->pNext = pStop;
 			pos = 0;
 		}

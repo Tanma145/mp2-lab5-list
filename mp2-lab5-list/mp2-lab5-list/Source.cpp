@@ -4,7 +4,26 @@
 #define size 2
 using namespace std;
 
-int main() {/*
+int main() {
+    /*
+    TMonomial mon1, mon2, mon3, mon4, mon5;
+    mon1.coeff = 1;
+    mon1.px = 1;
+    mon1.py = 2;
+    mon1.pz = 3;
+    mon2.coeff = 3;
+    mon2.px = 1;
+    mon2.py = 2;
+    mon2.pz = 4;
+
+    cout << mon1 << " ? " << mon2 << endl;
+    cout << "== " << (mon1 == mon2) << endl;
+    cout << ">  " << (mon1 > mon2) << endl;
+    cout << "<  " << (mon1 < mon2) << endl;
+    cout << ">= " << (mon1 >= mon2) << endl;
+    cout << "<= " << (mon1 <= mon2) << endl;
+    */
+    /*
 	int arr[size][2];
 	for (int i = 0; i < size; i++) {
 		cout << "Enter coeff";
@@ -24,9 +43,10 @@ int main() {/*
 	cout << pol2 << endl;
 	cout << (pol1 == pol2) << endl;*/
 
+    
     TMonomial mon1, mon2, mon3, mon4, mon5;
     TPolynomial pol1, pol2;
-
+    
     mon1.coeff = 1;
     mon1.px = 1;
     mon1.py = 2;
@@ -35,9 +55,10 @@ int main() {/*
     mon2.px = 4;
     mon2.py = 5;
     mon2.pz = 6;
-
+    /*
     pol1 += mon1;
     pol1 += mon2;
+    cout << pol1 << endl;
 
     mon3.coeff = 4;
     mon3.px = 7;
@@ -57,10 +78,18 @@ int main() {/*
     pol2 += mon4;
     pol2 += mon5;
 
+    pol1.DelList();
+    pol2.DelList();*/
+    pol1 += mon1;
+    pol1 += mon2;
+    pol2 += mon2;
+    pol2 += mon1;
+
     cout << pol1 << endl;
     cout << pol2 << endl;
     cout << (pol1 == pol2) << endl;
-
+    
+    
 	
 	_getch();
 	return 0;

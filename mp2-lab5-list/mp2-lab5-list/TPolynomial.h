@@ -7,16 +7,16 @@ struct TMonomial {
 		return ((px == a.px) && (py == a.py) && (pz == a.pz));
 	}
 	bool operator> (TMonomial a) {
-		return ((px > a.px) || (px <= a.px) && (py > a.py) || (px <= a.px) && (py <= a.py) && (pz > a.pz));
+		return ((px > a.px) || (px == a.px) && (py > a.py) || (px == a.px) && (py == a.py) && (pz > a.pz));
 	}
 	bool operator< (TMonomial a) {
-		return ((px < a.px) || (px >= a.px) && (py < a.py) || (px >= a.px) && (py >= a.py) && (pz < a.pz));
+		return ((px < a.px) || (px == a.px) && (py < a.py) || (px == a.px) && (py == a.py) && (pz < a.pz));
 	}
 	bool operator>= (TMonomial a) {
-		return ((px >= a.px) || (px < a.px) && (py >= a.py) || (px < a.px) && (py < a.py) && (pz >= a.pz));
+		return *this > a || *this == a;
 	}
 	bool operator<= (TMonomial a) {
-		return ((px <= a.px) || (px > a.px) && (py <= a.py) || (px > a.px) && (py > a.py) && (pz <= a.pz));
+		return *this < a || *this == a;
 	}
 	void operator+= (TMonomial mon) {
 		if (*this == mon) {
@@ -85,7 +85,7 @@ inline bool TPolynomial::operator==(const TPolynomial &pol) const{
 	TNode<TMonomial> *i1, *i2;
 	i1 = pFirst;
 	i2 = pol.pFirst;
-	while (i1->Val == i2->Val && i1 != pStop && i2 != pStop) {
+	while (i1->Val == i2->Val && i1->Val.coeff == i2->Val.coeff && i1 != pStop && i2 != pStop) {
 		cout << "oof" << endl;
 		i1 = i1->pNext;
 		i2 = i2->pNext;
@@ -107,7 +107,8 @@ void TPolynomial::operator+=(TMonomial& mon) {
 			pCurr->Val += mon;
 			if (!pCurr->Val.coeff)
 				DelCurr();
-			return;
+			else
+				return;
 		}
 		if (mon > pCurr->Val) {
 			InsCurr(mon);
