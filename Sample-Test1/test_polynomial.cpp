@@ -35,6 +35,22 @@ TEST(TPolynomial, can_add_monomial)
     TPolynomial pol;
     ASSERT_NO_THROW(pol += mon);
 }
+TEST(TPolynomial, last_monomial_can_be_erased)
+{
+    TMonomial mon1, mon2;
+    mon1.coeff = 1;
+    mon1.px = 1;
+    mon1.py = 1;
+    mon1.pz = 1;
+    mon2.coeff = 3;
+    mon2.px = 4;
+    mon2.py = 5;
+    mon2.pz = 6;
+
+    TPolynomial pol;
+    pol += mon1;
+    ASSERT_NO_THROW(pol -= mon1);
+}
 TEST(TPolynomial, can_multiply_by_monomial)
 {
     TMonomial mon1, mon2, mon3, mon4, mon5;

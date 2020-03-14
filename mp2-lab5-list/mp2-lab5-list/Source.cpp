@@ -81,9 +81,7 @@ int main() {
     pol1.DelList();
     pol2.DelList();*/
     pol1 += mon1;
-    pol1 += mon2;
-    pol2 += mon2;
-    pol2 += mon1;
+    pol1 -= mon1;
 
     cout << pol1 << endl;
     cout << pol2 << endl;

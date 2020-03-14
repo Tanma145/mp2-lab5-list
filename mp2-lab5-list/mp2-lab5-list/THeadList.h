@@ -10,6 +10,7 @@ public:
 		pStop = pHead;
 		pHead->pNext = pHead;
 		pFirst = pHead;
+		pLast = pHead;
 	}
 	~THeadList() {
 		TList<T>::DelList();

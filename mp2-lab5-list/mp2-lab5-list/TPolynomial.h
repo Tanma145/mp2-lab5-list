@@ -18,6 +18,10 @@ struct TMonomial {
 	bool operator<= (TMonomial a) {
 		return *this < a || *this == a;
 	}
+	TMonomial operator- () {
+		coeff = -coeff;
+		return *this;
+	}
 	void operator+= (TMonomial mon) {
 		if (*this == mon) {
 			coeff += mon.coeff;
@@ -66,6 +70,7 @@ public:
 	bool operator== (const TPolynomial&) const;
 	TPolynomial& operator= (TPolynomial&);
 	void operator+= (TMonomial&);
+	void operator-= (TMonomial&);
 	TPolynomial operator+ (TMonomial&);
 	void operator*= (TMonomial&);
 	TPolynomial operator* (TMonomial&);
@@ -86,7 +91,6 @@ inline bool TPolynomial::operator==(const TPolynomial &pol) const{
 	i1 = pFirst;
 	i2 = pol.pFirst;
 	while (i1->Val == i2->Val && i1->Val.coeff == i2->Val.coeff && i1 != pStop && i2 != pStop) {
-		cout << "oof" << endl;
 		i1 = i1->pNext;
 		i2 = i2->pNext;
 	}
@@ -103,12 +107,11 @@ inline TPolynomial& TPolynomial::operator=(TPolynomial &pol){
 
 void TPolynomial::operator+=(TMonomial& mon) {
 	for (Reset(); !IsEnd(); GoNext()) {
-		if (pCurr->Val == mon) {
+		if (mon == pCurr->Val) {
 			pCurr->Val += mon;
 			if (!pCurr->Val.coeff)
 				DelCurr();
-			else
-				return;
+			return;
 		}
 		if (mon > pCurr->Val) {
 			InsCurr(mon);
@@ -116,6 +119,10 @@ void TPolynomial::operator+=(TMonomial& mon) {
 		}
 	}
 	InsLast(mon);
+}
+
+inline void TPolynomial::operator-=(TMonomial& mon){
+	*this += -mon;
 }
 
 TPolynomial TPolynomial::operator+(TMonomial& mon) {

@@ -39,32 +39,24 @@ public:
 	}
 	void InsFirst(T el) {
 		TNode<T>* tmp = new TNode<T>;
-		tmp->Val = el;
 		tmp->pNext = pFirst;
-		if (pFirst == NULL) {
-			pFirst = tmp;
-			pLast = tmp;
-			pCurr = tmp;
-			pFirst->pNext = pStop;
-			pos = 0;
-		}
-		else {
-			tmp->pNext = pFirst;
-			pFirst = tmp;
-		}
+		tmp->Val = el;
+		pFirst = tmp;
+		if (pLast == pStop) pLast = tmp;
 		len++;
 		pos++;
 	}
 	void InsLast(T el) {
-		if (pLast == NULL)
-			InsFirst(el);
-		else {
+		if (pLast != pStop){
 			TNode<T>* tmp = new TNode<T>;
 			pLast->pNext = tmp;
 			tmp->pNext = pStop;
 			tmp->Val = el;
 			pLast = tmp;
 			len++;
+		}
+		else {
+			InsFirst(el);
 		}
 	}
 	void InsCurr(T el) {
@@ -79,6 +71,7 @@ public:
 		}
 	}
 	void DelFirst() {
+		if (pCurr == pFirst) GoNext();
 		TNode<T>* tmp = new TNode<T>;
 		tmp = pFirst->pNext;
 		delete pFirst;
