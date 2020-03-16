@@ -34,6 +34,17 @@ struct TMonomial {
 		res += mon;
 		return res;
 	}
+	void operator*= (TMonomial mon) {
+		coeff *= mon.coeff;
+		px += mon.px;
+		py += mon.py;
+		pz += mon.pz;
+	}
+	TMonomial operator* (TMonomial mon) {
+		TMonomial res = *this;
+		res *= mon;
+		return res;
+	}
 	friend ostream& operator<< (ostream& os, const TMonomial& mon) {
 		if (mon.coeff != 0) {
 			if (mon.coeff < 0)
@@ -70,11 +81,14 @@ public:
 	bool operator== (const TPolynomial&) const;
 	TPolynomial& operator= (TPolynomial&);
 	void operator+= (TMonomial&);
-	void operator-= (TMonomial&);
 	TPolynomial operator+ (TMonomial&);
+	void operator-= (TMonomial&);
 	void operator*= (TMonomial&);
 	TPolynomial operator* (TMonomial&);
 	void operator+= (TPolynomial&);
+	TPolynomial operator+ (TPolynomial&);
+	void operator*= (TPolynomial&);
+	TPolynomial operator* (TPolynomial&);
 	friend ostream& operator<< (ostream& os, TPolynomial& pol) {
 		os << pol.pFirst->Val;
 		for (pol.Reset(); !pol.IsEnd(); pol.GoNext()) {
@@ -166,9 +180,30 @@ void TPolynomial::operator+=(TPolynomial& q) {
 				pCurr->Val = rm;
 				if (rm.coeff == 0)
 					DelCurr();
-				GoNext();
+				else
+					GoNext();
 				q.GoNext();
 			}
 	}
 }
 
+TPolynomial TPolynomial::operator+(TPolynomial& pol) {
+	TPolynomial res = *this;
+	res += pol;
+	return res;
+}
+
+inline void TPolynomial::operator*=(TPolynomial& q){
+	for (Reset(); !IsEnd(); GoNext()) {
+		for (q.Reset(); !q.IsEnd(); q.GoNext()) {
+			cout << "!!!" << pCurr->Val << " * " << q.pCurr->Val << " = " << (pCurr->Val * q.pCurr->Val) <<endl;
+			pCurr->Val *= q.pCurr->Val;
+		}
+	}
+}
+
+inline TPolynomial TPolynomial::operator*(TPolynomial& pol){
+	TPolynomial res = *this;
+	res *= pol;
+	return pol;
+}

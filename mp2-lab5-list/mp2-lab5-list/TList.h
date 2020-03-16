@@ -91,10 +91,17 @@ public:
 	void DelCurr() {
 		if (pCurr == pFirst) DelFirst();
 		else {
+			TNode<T>* tmp = pCurr;
+			pPrev->pNext = pCurr->pNext;
+			pCurr = pCurr->pNext;
+			delete tmp;
+			len--;
+			/*
 			TNode<T>* tmp = new TNode<T>;
 			tmp = pCurr;
 			delete pCurr;
 			pCurr = tmp->pNext;
+			*/
 		}
 	}
 	void DelList() {
