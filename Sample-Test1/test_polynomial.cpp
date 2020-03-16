@@ -61,6 +61,104 @@ TEST(TPolynomial, can_add_polynomial)
     pol1 += pol2;
     EXPECT_EQ(pol1, pol3);
 }
+TEST(TPolynomial, last_monomial_can_be_cancelled_out)
+{
+    TMonomial mon1, mon2, mon3, mon4;
+    TPolynomial pol1, pol2, pol3;
+    mon1.coeff = 1;
+    mon1.px = 1;
+    mon1.py = 2;
+    mon1.pz = 3;
+    mon2.coeff = 3;
+    mon2.px = 4;
+    mon2.py = 5;
+    mon2.pz = 6;
+    pol1 += mon1;
+    pol1 += mon2;
+    cout << "pol1 = " << pol1 << endl;
+
+    mon3.coeff = -1;
+    mon3.px = 1;
+    mon3.py = 2;
+    mon3.pz = 3;
+
+    pol2 += mon3;
+    cout << "pol2 = " << pol2 << endl;
+    pol1 += pol2;
+    pol3 += mon2;
+    cout << "pol3 = " << pol3 << endl;
+    cout << "pol1 + pol2 = " << pol1 << endl;
+    EXPECT_EQ(pol1, pol3);
+}
+TEST(TPolynomial, first_monomial_can_be_cancelled_out)
+{
+    TMonomial mon1, mon2, mon3, mon4;
+    TPolynomial pol1, pol2, pol3;
+    mon1.coeff = 1;
+    mon1.px = 1;
+    mon1.py = 2;
+    mon1.pz = 3;
+    mon2.coeff = 3;
+    mon2.px = 4;
+    mon2.py = 5;
+    mon2.pz = 6;
+    pol1 += mon1;
+    pol1 += mon2;
+    cout << "pol1 = " << pol1 << endl;
+
+    mon3.coeff = -3;
+    mon3.px = 4;
+    mon3.py = 5;
+    mon3.pz = 6;
+
+    pol2 += mon3;
+    cout << "pol2 = " << pol2 << endl;
+    pol1 += pol2;
+    pol3 += mon1;
+    cout << "pol3 = " << pol3 << endl;
+    cout << "pol1 + pol2 = " << pol1 << endl;
+    EXPECT_EQ(pol1, pol3);
+}
+TEST(TPolynomial, first_monomial_can_be_cancelled_out)
+{
+    TMonomial mon1, mon2, mon3, mon4, mon5, mon6, mon8, mon9;
+    TPolynomial pol1, pol2, pol3;
+    mon1.coeff = 4;
+    mon1.px = 3;
+    mon1.py = 3;
+    mon1.pz = 3;
+    mon2.coeff = 7;
+    mon2.px = 2;
+    mon2.py = 1;
+    mon2.pz = 4;
+    mon3.coeff = -3;
+    mon3.px = 1;
+    mon3.py = 2;
+    mon3.pz = 3;
+    mon4.coeff = -1;
+    mon4.px = 1;
+    mon4.py = 2;
+    mon4.pz = 1;
+    mon5.coeff = -6;
+    mon5.px = 0;
+    mon5.py = 4;
+    mon5.pz = 1;
+    pol1 += mon1;
+    pol1 += mon2;
+    pol1 += mon3;
+    pol1 += mon4;
+    pol1 += mon5;
+    cout << "pol1 = " << pol1 << endl;
+
+
+    pol2 += mon3;
+    cout << "pol2 = " << pol2 << endl;
+    pol1 += pol2;
+    pol3 += mon1;
+    cout << "pol3 = " << pol3 << endl;
+    cout << "pol1 + pol2 = " << pol1 << endl;
+    EXPECT_EQ(pol1, pol3);
+}
 TEST(TPolynomial, can_multiply_by_monomial)
 {
     TMonomial mon1, mon2, mon3, mon4, mon5;
@@ -113,6 +211,7 @@ TEST(TPolynomial, can_multiply_by_polynomial)
 
     pol1 += mon1;
     pol1 += mon2;
+    cout << pol1 << endl;
 
     mon3.coeff = 4;
     mon3.px = 7;
@@ -122,8 +221,10 @@ TEST(TPolynomial, can_multiply_by_polynomial)
     mon4.px = 10;
     mon4.py = 11;
     mon4.pz = 12;
+
     pol2 += mon3;
     pol2 += mon4;
+    cout << pol2 << endl;
 
     mon5.coeff = 4;
     mon5.px = 8;
@@ -140,7 +241,7 @@ TEST(TPolynomial, can_multiply_by_polynomial)
     pol3 += mon5;
     pol3 += mon6;
     pol3 += mon7;
+    cout << pol3 << endl;
 
-    pol1 *= pol2;
-    EXPECT_EQ(pol1, pol3);
+    EXPECT_EQ(pol1 * pol2, pol3);
 }

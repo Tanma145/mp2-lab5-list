@@ -98,6 +98,24 @@ public:
 		}
 		return os;
 	}
+	friend istream& operator>> (istream& is, TPolynomial& pol) {
+		double c;
+		TMonomial tmp;
+
+		pol.Reset();
+		cout << "Enter coeff" << endl;
+		is >> c;
+		while (c != 0) {
+			tmp.coeff = c;
+			cout << "Enter powers" << endl;
+			is >> tmp.px >> tmp.py >> tmp.pz;
+			pol += tmp;
+			pol.GoNext();
+			cout << "Enter coeff" << endl;
+			is >> c;
+		}
+		return is;
+	}
 };
 
 inline bool TPolynomial::operator==(const TPolynomial &pol) const{
@@ -193,17 +211,17 @@ TPolynomial TPolynomial::operator+(TPolynomial& pol) {
 	return res;
 }
 
-inline void TPolynomial::operator*=(TPolynomial& q){
-	for (Reset(); !IsEnd(); GoNext()) {
-		for (q.Reset(); !q.IsEnd(); q.GoNext()) {
-			cout << "!!!" << pCurr->Val << " * " << q.pCurr->Val << " = " << (pCurr->Val * q.pCurr->Val) <<endl;
-			pCurr->Val *= q.pCurr->Val;
-		}
-	}
+void TPolynomial::operator*=(TPolynomial& q){
+	(*this) = (*this) * q;
 }
 
-inline TPolynomial TPolynomial::operator*(TPolynomial& pol){
-	TPolynomial res = *this;
-	res *= pol;
-	return pol;
+inline TPolynomial TPolynomial::operator*(TPolynomial& q){
+	TPolynomial res;
+	for (Reset(); !IsEnd(); GoNext()) {
+		for (q.Reset(); !q.IsEnd(); q.GoNext()) {
+			res += (pCurr->Val * q.pCurr->Val);
+		}
+	}
+	//cout << res << endl;
+	return res;
 }
